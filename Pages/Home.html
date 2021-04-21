@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="Home.css" />
+    <script
+      src="https://kit.fontawesome.com/d5b9d7f3af.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Home</title>
+  </head>
+  <body class="containter-fluid" onmousemove="stopRefresh()">
+    <div class="row">
+      <div id="header" class="container-fluid">
+        <div class="row">
+          <h1 class="col-sm-4">Cata Bros</h1>
+          <p class="col-sm-2" id="username">username</p>
+          <p class="col-sm-4" id="email">email</p>
+          <a class="col-sm-2" href="/logout">logout</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="leftside" class="col-sm-4">
+        <form id="isbnform" action="" method="post">
+          <h1>ISBN search</h1>
+          <label for="isbn">ISBN:</label>
+          <input
+            onclick="stopRefresh()"
+            type="text"
+            name="isbn"
+            id="isbn"
+            required
+          />
+          <button title="Search"><i class="fas fa-search"></i></button>
+          <button title="Clear Search" onclick="clearBook()" type="reset"><i class="fas fa-backspace"></i></i></button>
+          <button title= "Refresh History" id="refresh" onclick="refreshHistory()"><i class="fas fa-sync-alt"></i></button>
+        </form>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+          <table
+            id="history"
+            class="table table-striped table-primary table-hover"
+          >
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="rightside" class="col-sm-8">
+        <div id="bookdetaildisplay" style="display: none">
+          <h1>Book:</h1>
+          <p id="title">Title:</p>
+          <p id="authors">Authors:</p>
+          <p id="publishedDate">Published Date:</p>
+          <p id="pageCount">Page Count:</p>
+          <p id="addedgroup">Added Group</p>
+          <div id="addedcomments"></div>
+        </div>
+        <div id="customise" style="display: none">
+          <h1>Customise</h1>
+          <form id="addcomment" action="" method="post">
+            <label for="comment">Comment:</label>
+            <input id="comment" type="text" name="comment" />
+            <button>Add Comment</button>
+          </form>
+          <form id="addgroup" action="" method="post">
+            <label for="group">Group:</label>
+            <input id="group" type="text" name="group" />
+            <button>Update Group</button>
+          </form>
+          <button title="Save to library "id="addbook" style="display: none"><i class="fas fa-download"></i></button>
+          <button title="Delete Book" id="deletebook" style="display: none" onclick="deleteBook()">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" id="footer">This is footer</div>
+    </div>
+    <script>
+      let value = document.cookie.split("; ");
+      let username = value[0].split("=")[1];
+      let email = value[1].split("=")[1].replace("%40", "@");
+      document.getElementById("username").innerHTML = `hello ${username}`;
+      document.getElementById("email").innerHTML = `${email}`;
+
+      //check ISBN function
+      const checkISBN = (isbn) => {
+        if (!/^\d+$/.test(isbn)) {
+          return "ISBN is NaN";
+        }
+        if (isbn.length != 13) {
+          return "ISBN is not 13 digit";
+        }
+        let sum = 0;
+        for (i = 0; i < isbn.length - 1; i++) {
+          if (i % 2 == 0) {
+            sum += parseInt(isbn[i], 10) * 1;
+          } else {
+            sum += parseInt(isbn[i], 10) * 3;
+          }
+        }
+        let checkDigit = 10 - (sum % 10);
+        return checkDigit == parseInt(isbn[12]) ? "ok" : "ISBN is invalid";
+      };
+
+      //get book details from isbn submit
+      const isbn_form = document.getElementById("isbnform");
+      isbn_form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const isbn = isbn_form.isbn.value.trim();
+        document.getElementById("deletebook").style.display = "none";
+        if (checkISBN(isbn) == "ok") {
+          const email = document.getElementById("email").innerText;
+          try {
+            const res = await fetch("/home/isbn", {
+              method: "POST",
+              body: JSON.stringify({ isbn, email }),
+              headers: { "Content-Type": "application/json" },
+            });
+            const book = await res.json();
+            if (book["title"]) {
+              console.log(book);
+              document.getElementById("bookdetaildisplay").style.display =
+                "block";
+              document.getElementById("customise").style.display = "block";
+              if (!book["found"]) {
+                document.getElementById("addbook").style.display = "block";
+              } else {
+                document.getElementById("deletebook").style.display = "block";
+              }
+              document.getElementById("title").innerHTML = book["title"];
+              document.getElementById("authors").innerHTML = book["authors"];
+              document.getElementById("publishedDate").innerHTML =
+                book["publishedDate"];
+              document.getElementById("pageCount").innerHTML =
+                book["pageCount"];
+
+              document.getElementById("addedcomments").innerHTML = "";
+              for (let index = 0; index < book.comment.length; index++) {
+                let element = document.createElement("p");
+                if (book.comment[index] != "") {
+                  element.innerHTML = book.comment[index];
+                  document.getElementById("addedcomments").appendChild(element);
+                }
+              }
+              document.getElementById("addedgroup").innerHTML =
+                book.group || "Uncategorised";
+            } else {
+              document.getElementById("bookdetaildisplay").style.display =
+                "none";
+              document.getElementById("customise").style.display = "none";
+              console.log("not found");
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          if (checkISBN(isbn) == "ISBN is invalid") {
+            alert("ISBN is invalid, please enter the valid ISBN");
+          }
+          if (checkISBN(isbn) == "ISBN is NaN") {
+            alert("ISBN contains only numbers, please enter numbers");
+          }
+          if (checkISBN(isbn) == "ISBN is not 13 digit") {
+            alert("ISBN must have 13 digits, please enter the 13-digit ISBN");
+          }
+          document.getElementById("isbn").value = "";
+        }
+      });
+
+      //clear book details after Clear Search Button is triggered
+      const clearBook = () => {
+        document.getElementById("bookdetaildisplay").style.display = "none";
+        document.getElementById("customise").style.display = "none";
+        document.getElementById("deletebook").style.display = "none";
+      };
+
+      //add book in database
+      let addbook = document.getElementById("addbook");
+      addbook.addEventListener("click", async (e) => {
+        e.preventDefault();
+        try {
+          const email = document.getElementById("email").innerText;
+          const comment = document.getElementById("comment").value;
+          const group = document.getElementById("group").value;
+          const isbn = isbn_form.isbn.value;
+          const title = document.getElementById("title").innerText;
+          const authors = document.getElementById("authors").innerText;
+          const publishedDate = document.getElementById("publishedDate")
+            .innerText;
+          const pageCount = document.getElementById("pageCount").innerText;
+          let book = {
+            email: email,
+            title: title,
+            authors: authors,
+            publishedDate: publishedDate,
+            pageCount: pageCount,
+            isbn: isbn,
+            group: group,
+            comment: comment,
+          };
+          const res = await fetch("/home/addbook", {
+            method: "POST",
+            body: JSON.stringify({ book }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const confirm = await res.json();
+          if (confirm) {
+            for (let index = 0; index < confirm.comment.length; index++) {
+              let element = document.createElement("p");
+              if (confirm.comment[index] != "") {
+                element.innerHTML = confirm.comment[index];
+                document.getElementById("addedcomments").appendChild(element);
+              }
+            }
+            document.getElementById("addedgroup").innerHTML = confirm.group;
+            document.getElementById("addbook").style.display = "none";
+            document.getElementById("deletebook").style.display = "block";
+            //add some animations comfirming saving successful
+            refreshHistory();
+            console.log(confirm);
+          } else {
+            console.log("Cannot save book to database");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      //delete book
+      const deleteBook = async () => {
+        const isbn = document.getElementById("isbn").value;
+        const email = document.getElementById("email").innerText;
+        const sure = prompt("Are you sure want to delete?", "yes") || "";
+        if (sure == "yes") {
+          try {
+            const res = await fetch("/home/delete", {
+              method: "POST",
+              body: JSON.stringify({ isbn, email }),
+              headers: { "Content-Type": "application/json" },
+            });
+            const confirm = await res.json();
+            if (confirm) {
+              refreshHistory();
+              clearBook();
+              document.getElementById("deletebook").style.display = "none";
+              console.log(confirm);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      };
+
+      //add comment
+      let addcomment = document.getElementById("addcomment");
+      addcomment.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          const comment = document.getElementById("comment").value;
+          const isbn = document.getElementById("isbn").value;
+          const email = document.getElementById("email").innerText;
+          const res = await fetch("/home/addcomment", {
+            method: "POST",
+            body: JSON.stringify({ comment, email, isbn }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const confirmcomment = await res.json();
+          if (confirmcomment) {
+            document.getElementById("addedcomments").innerHTML = "";
+            console.log(confirmcomment);
+            for (
+              let index = 0;
+              index < confirmcomment.comment.length;
+              index++
+            ) {
+              let element = document.createElement("p");
+              if (confirmcomment.comment[index] != "") {
+                element.innerHTML = confirmcomment.comment[index];
+                document.getElementById("addedcomments").appendChild(element);
+              }
+            }
+          } else {
+            console.log("Cannot add comment");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      //add group
+      let addgroup = document.getElementById("addgroup");
+      addgroup.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        try {
+          const group = document.getElementById("group").value;
+          const isbn = document.getElementById("isbn").value;
+          const email = document.getElementById("email").innerText;
+          const res = await fetch("/home/addgroup", {
+            method: "POST",
+            body: JSON.stringify({ group, isbn, email }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const confirmgroup = await res.json();
+          if (confirmgroup) {
+            console.log(confirmgroup);
+            document.getElementById("addedgroup").innerHTML =
+              confirmgroup.group;
+          } else {
+            console.log("Cannot add group");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+
+      //show book details when history is clicked
+      const showHistory = async (isbn) => {
+        const email = document.getElementById("email").innerText;
+        document.getElementById("isbn").value = isbn;
+        try {
+          const res = await fetch("/home/isbn", {
+            method: "POST",
+            body: JSON.stringify({ isbn, email }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const book = await res.json();
+          if (book["title"]) {
+            console.log(book);
+            document.getElementById("deletebook").style.display = "block";
+            document.getElementById("bookdetaildisplay").style.display =
+              "block";
+            document.getElementById("customise").style.display = "block";
+            if (!book["found"]) {
+              document.getElementById("addbook").style.display = "block";
+            }
+            document.getElementById("title").innerHTML = book["title"];
+            document.getElementById("authors").innerHTML = book["authors"];
+            document.getElementById("publishedDate").innerHTML =
+              book["publishedDate"];
+            document.getElementById("pageCount").innerHTML = book["pageCount"];
+
+            document.getElementById("addedcomments").innerHTML = "";
+            for (let index = 0; index < book.comment.length; index++) {
+              let element = document.createElement("p");
+              if (book.comment[index] != "") {
+                element.innerHTML = book.comment[index];
+                document.getElementById("addedcomments").appendChild(element);
+              }
+            }
+            document.getElementById("addedgroup").innerHTML =
+              book.group || "Uncategorised";
+          } else {
+            document.getElementById("bookdetaildisplay").style.display = "none";
+            document.getElementById("customise").style.display = "none";
+            console.log("not found");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      //convert milliseconds to hours
+      function secondsToDhms(seconds) {
+        seconds = Number(seconds / 1000);
+        let d = Math.floor(seconds / (3600 * 24));
+        let h = Math.floor((seconds % (3600 * 24)) / 3600);
+        let m = Math.floor((seconds % 3600) / 60);
+        let s = Math.floor(seconds % 60);
+
+        let dDisplay = d > 0 ? d + (d == 1 ? "d " : "d ") : "";
+        let hDisplay = h > 0 ? h + (h == 1 ? "h " : "h ") : "";
+        let mDisplay = m > 0 ? m + (m == 1 ? "m " : "m ") : "";
+        let sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
+        return dDisplay + hDisplay + mDisplay + sDisplay;
+      }
+
+      //refreshHistory on the left side when refresh button is triggered
+      const refreshHistory = async () => {
+        email = document.getElementById("email").innerText;
+        try {
+          const res = await fetch("/home/history", {
+            method: "POST",
+            body: JSON.stringify({ email }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const books = await res.json();
+          // Sort according to date added
+          $("#history tbody").empty();
+          for (let index = books.length - 1; index >= 0; index -= 1) {
+            let element = books[index];
+            const timenow = new Date();
+            const timeadded = new Date(element.time);
+            const time = secondsToDhms(timenow - timeadded);
+            $("#history tbody").append(`
+              <tr>
+                <td style = "width: 100%">
+                  <div onclick="showHistory(${element.isbn})">
+                  <p>Title: ${element.title}</p>
+                  <p>ISBN: ${element.isbn}</p>
+                  <p>Authors: ${element.authors}</p>
+                  <p>${time} ago</p>
+                  </div>
+                </td>
+              </tr>
+              `);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      let refresh = setInterval(refreshHistory, 500);
+      const stopRefresh = () => {
+        clearInterval(refresh);
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

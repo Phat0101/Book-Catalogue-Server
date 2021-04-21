@@ -1,0 +1,66 @@
+body {
+  height: 600px;
+  width: auto;
+}
+#header {
+  background: rgb(64, 240, 231);
+  height: auto;
+}
+
+@media screen and (max-width: 500px) {
+  #header {
+    height: auto;
+  }
+}
+
+#leftside {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  height: 500px;
+  background: rgb(17, 99, 37);
+}
+
+#clearbook {
+  height: auto;
+  width: 10%;
+}
+
+#isbnform {
+  width: 95%;
+}
+
+#isbnform button {
+  background: none;
+  border: none;
+}
+
+#refresh {
+  background: none;
+  border: none;
+}
+.my-custom-scrollbar {
+  position: relative;
+  height: 400px;
+  width: 95%;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+#rightside {
+  height: 500px;
+  background: rgb(162, 50, 177);
+}
+
+#customise {
+
+}
+
+#footer {
+  min-height: 50px;
+  background: rgb(64, 240, 231);
+  position: relative;
+  bottom: 0;
+}
