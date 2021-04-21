@@ -21,19 +21,18 @@
     <div class="row">
       <div id="header" class="container-fluid">
         <div class="row">
-          <h1 class="col-sm-4">Cata Bros</h1>
-          <p class="col-sm-2" id="username">username</p>
-          <p class="col-sm-4" id="email">email</p>
-          <a class="col-sm-2" href="/logout">logout</a>
+          <h1 class="col-7 col-sm-4 " >Cata Bros</h1>
+          <p class="col-5 col-sm-2" id="username">username</p>
+          <p class="col-7 col-sm-4" id="email">email</p>
+          <a class="col-5 col-sm-2" href="/logout">logout</a>
         </div>
       </div>
     </div>
     <div class="row">
       <div id="leftside" class="col-sm-4">
         <form id="isbnform" action="" method="post">
-          <h1>ISBN search</h1>
-          <label for="isbn">ISBN:</label>
-          <input
+          <h4>ISBN search</h4>
+             <input
             onclick="stopRefresh()"
             type="text"
             name="isbn"
@@ -53,32 +52,48 @@
           </table>
         </div>
       </div>
-      <div id="rightside" class="col-sm-8">
-        <div id="bookdetaildisplay" style="display: none">
-          <h1>Book:</h1>
-          <p id="title">Title:</p>
-          <p id="authors">Authors:</p>
-          <p id="publishedDate">Published Date:</p>
-          <p id="pageCount">Page Count:</p>
-          <p id="addedgroup">Added Group</p>
-          <div id="addedcomments"></div>
+      <div id="rightside" class="col-sm-7">
+        <div id="bookdetaildisplay" style="display: none" class="container-fluid">
+          <h2>Book Info:</h2>
+          <div class="row">
+            <h4 class="col-7">Title:</h4>
+            <h4 class="col-5">Authors:</h4>
+            <p class="col-7" id="title"></p>
+            <p class="col-5" id="authors"></p>
+            <h4 class="col-7">Published Date:</h4>
+            <h4 class="col-5">Page Count:</h4>
+            <p class="col-7" id="publishedDate"></p>
+            <p class="col-5" id="pageCount"></p>
+          </div>
+          <div class="row">
+            <h4 class="col-7">Comments:</h4>
+            <h4 class="col-5" >Group:</h4>
+            <div class="col-7 comment-scroll" id="addedcomments"></div>
+            <div class="col-5" id="addedgroup">Added Group</div>
+          </div>
         </div>
-        <div id="customise" style="display: none">
-          <h1>Customise</h1>
-          <form id="addcomment" action="" method="post">
-            <label for="comment">Comment:</label>
-            <input id="comment" type="text" name="comment" />
-            <button>Add Comment</button>
-          </form>
-          <form id="addgroup" action="" method="post">
-            <label for="group">Group:</label>
-            <input id="group" type="text" name="group" />
-            <button>Update Group</button>
-          </form>
-          <button title="Save to library "id="addbook" style="display: none"><i class="fas fa-download"></i></button>
-          <button title="Delete Book" id="deletebook" style="display: none" onclick="deleteBook()">
-          <i class="fas fa-trash-alt"></i>
-        </button>
+        <div id="customise" style="display: none" class="container-fluid">
+          <h2>Customise</h2>
+          <div class="row">
+            <div id="customise-left" class="col-10">
+              <form id="addcomment" action="" method="post">
+                <label for="comment">Comment:</label>
+                <input id="comment" type="text" name="comment" />
+                <button><i class="fas fa-plus-circle"></i></button>
+              </form>
+              <form id="addgroup" action="" method="post">
+                <label for="group">Group:</label>
+                <input id="group" type="text" name="group" />
+                <button><i class="fas fa-plus-circle"></i></button>
+              </form>
+            </div>
+            <div id="customise-right" class="col-2">
+              <button title="Save to library "id="addbook" style="display: none"><i class="fas fa-download"></i></button>
+              <button title="Delete Book" id="deletebook" style="display: none" onclick="deleteBook()">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            </div> 
+          </div>       
         </div>
       </div>
     </div>
@@ -425,7 +440,7 @@
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      integrity="sha384-JEW9xMcG8R+ph41jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
       crossorigin="anonymous"
     ></script>
     <script

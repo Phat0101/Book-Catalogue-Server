@@ -1,9 +1,22 @@
 body {
   height: 600px;
   width: auto;
+  background: #1eb3e0; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #ffffff,
+    #6dd5fa,
+    #1eb3e0
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #ffffff,
+    #6dd5fa,
+    #1eb3e0
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 #header {
-  background: rgb(64, 240, 231);
+  background: transparent;
   height: auto;
 }
 
@@ -18,7 +31,10 @@ body {
   justify-content: space-around;
   flex-wrap: wrap;
   height: 500px;
-  background: rgb(17, 99, 37);
+  margin-top: 10px;
+  margin-left: 20px;
+  border-radius: 5px ;
+  background: #ffffff;
 }
 
 #clearbook {
@@ -29,7 +45,9 @@ body {
 #isbnform {
   width: 95%;
 }
-
+#isbnform input {
+  min-width: 100px;
+}
 #isbnform button {
   background: none;
   border: none;
@@ -49,18 +67,91 @@ body {
   display: block;
 }
 
-#rightside {
-  height: 500px;
-  background: rgb(162, 50, 177);
+.my-custom-scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-#customise {
+.my-custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
 
+.my-custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #0ae;
+
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    color-stop(0.5, rgba(255, 255, 255, 0.2)),
+    color-stop(0.5, transparent),
+    to(transparent)
+  );
+}
+#rightside {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 500px;
+  margin-top: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background: #63b9d8;
+}
+
+#bookdetaildisplay {
+  width: 90%;
+  height: 390px;
+  position: absolute;
+  top: 10px;
+  padding: 0px;
+}
+#customise {
+  width: 90%;
+  position: absolute;
+  bottom: 0;
+  padding: 0px;
+}
+.comment-scroll {
+  display: block;
+  position: relative;
+  height: 100px;
+  width: 58%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.comment-scroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.comment-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.comment-scroll::-webkit-scrollbar-thumb {
+  background-color: #0ae;
+
+  background-image: -webkit-gradient(
+    linear,
+    0 0,
+    0 100%,
+    color-stop(0.5, rgba(255, 255, 255, 0.2)),
+    color-stop(0.5, transparent),
+    to(transparent)
+  );
+}
+
+#customise input {
+  margin-bottom: 10px;
+  width: 60%;
+}
+#addgroup input {
+  margin-left: 26px;
 }
 
 #footer {
   min-height: 50px;
-  background: rgb(64, 240, 231);
+  background: transparent;
   position: relative;
   bottom: 0;
 }
