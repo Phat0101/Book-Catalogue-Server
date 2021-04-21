@@ -1,15 +1,16 @@
 body {
   height: 600px;
-  width: auto;
+  width: 100vw;
   background: #1eb3e0; /* fallback for old browsers */
+  overflow-x: hidden;
   background: -webkit-linear-gradient(
-    to left,
+    to top,
     #ffffff,
     #6dd5fa,
     #1eb3e0
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to left,
+    to top,
     #ffffff,
     #6dd5fa,
     #1eb3e0
@@ -96,6 +97,7 @@ body {
   margin-left: 10px;
   border-radius: 5px;
   background: #63b9d8;
+  padding-right: 0px;
 }
 
 #bookdetaildisplay {
