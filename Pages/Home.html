@@ -17,14 +17,14 @@
     ></script>
     <title>Home</title>
   </head>
-  <body class="containter-fluid" onmousemove="stopRefresh()">
+  <body class="containter-fluid">
     <div class="row">
       <div id="header" class="container-fluid">
         <div class="row">
           <h1 class="col-7 col-sm-4 " >Cata Bros</h1>
           <p class="col-5 col-sm-2" id="username">username</p>
           <p class="col-7 col-sm-4" id="email">email</p>
-          <a class="col-5 col-sm-2" href="/logout">logout</a>
+          <a class="col-5 col-sm-2" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
         </div>
       </div>
     </div>
@@ -104,7 +104,7 @@
       let value = document.cookie.split("; ");
       let username = value[0].split("=")[1];
       let email = value[1].split("=")[1].replace("%40", "@");
-      document.getElementById("username").innerHTML = `hello ${username}`;
+      document.getElementById("username").innerHTML = `Hello ${username}`;
       document.getElementById("email").innerHTML = `${email}`;
 
       //check ISBN function
@@ -433,10 +433,7 @@
           console.log(error);
         }
       };
-      let refresh = setInterval(refreshHistory, 500);
-      const stopRefresh = () => {
-        clearInterval(refresh);
-      };
+      setTimeout(refreshHistory,1);
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
