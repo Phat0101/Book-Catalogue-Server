@@ -21,13 +21,14 @@
     <div class="row">
       <div id="header" class="container-fluid">
         <div class="row">
-          <h1 class="col-7 col-sm-4 " >Cata Bros</h1>
+          <h1 class="col-7 col-sm-4 " >CataBook</h1>
           <p class="col-5 col-sm-2" id="username">username</p>
           <p class="col-7 col-sm-4" id="email">email</p>
           <a class="col-5 col-sm-2" href="/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
         </div>
       </div>
     </div>
+    <hr>
     <div class="row">
       <div id="leftside" class="col-sm-4">
         <form id="isbnform" action="" method="post">
@@ -88,23 +89,24 @@
               </form>
             </div>
             <div id="customise-right" class="col-2">
-              <button title="Save to library "id="addbook" style="display: none"><i class="fas fa-download"></i></button>
+              <button title="Save to library "id="addbook" style="display: none"><i id='download'class="fas fa-download"></i></button>
               <button title="Delete Book" id="deletebook" style="display: none" onclick="deleteBook()">
-              <i class="fas fa-trash-alt"></i>
+                <span class="trash">
+                  <span></span>
+                  <i></i>
+                </span>
+                <!-- <i class="fas fa-trash-alt"></i> -->
             </button>
             </div> 
           </div>       
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col" id="footer">This is footer</div>
-    </div>
     <script>
       let value = document.cookie.split("; ");
       let username = value[0].split("=")[1];
       let email = value[1].split("=")[1].replace("%40", "@");
-      document.getElementById("username").innerHTML = `Hello ${username}`;
+      document.getElementById("username").innerHTML = `Hi ${username}`;
       document.getElementById("email").innerHTML = `${email}`;
 
       //check ISBN function

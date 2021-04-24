@@ -23,16 +23,26 @@ body {
 #header h1 {
   padding-left: 20px;
   color: #ffffff;
+  margin: auto;
 }
 
+#header p {
+  margin: auto;
+}
 #header a {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: black;
+  margin: auto;
+  text-decoration: none;
 }
-@media screen and (max-width: 500px) {
-  #header {
-    height: auto;
-  }
+
+#email {
+  padding-left: 20px;
+}
+hr {
+  color: #fff;
+  margin: 5px;
+  margin-bottom: 0px;
 }
 
 #leftside {
@@ -91,7 +101,7 @@ body {
 }
 
 .my-custom-scrollbar::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .my-custom-scrollbar::-webkit-scrollbar {
@@ -118,7 +128,7 @@ body {
   margin-top: 10px;
   margin-left: 10px;
   border-radius: 5px;
-  background: #abe4f8;
+  background: transparent;
   padding-right: 0px;
 }
 
@@ -145,7 +155,7 @@ body {
 }
 
 .comment-scroll::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .comment-scroll::-webkit-scrollbar {
@@ -181,6 +191,14 @@ body {
   background: none;
   border: none;
 }
+
+#customise-left button i:hover {
+  animation: addcms 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+@keyframes addcms {
+  from{}
+  to {font-size: 17px; padding: auto}
+}
 #addgroup input {
   margin-left: 26px;
 }
@@ -189,6 +207,108 @@ body {
   color: rgb(0, 0, 0);
   background: none;
   border: none;
+  height: 100%;
+}
+
+#download {
+  font-size: 35px;
+}
+#download:hover {
+  animation: downloadbutton 1s cubic-bezier(0.165, 0.84, 0.44, 1);;
+}
+@keyframes downloadbutton {
+  from{ 
+    font-size: 35px;
+  }
+  to {
+    padding-left: 0px;
+    font-size: 37px;
+  }
+}
+/* trash bin animation */
+.trash {
+  background: #000000;
+  width: 33px;
+  height: 40px;
+  display: inline-block;
+  margin: 0 auto;
+
+  position: relative;
+  -webkit-border-bottom-right-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.trash:after {
+  position: absolute;
+  left: -45px;
+  right: 0;
+  bottom: -25px;
+  width: 150px;
+}
+.trash span {
+  position: absolute;
+  height: 6px;
+  background: #000000;
+  top: -10px;
+  left: -5px;
+  right: -5px;
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transform: rotate(0deg);
+  transition: transform 250ms;
+  transform-origin: 19% 100%;
+}
+.trash span:after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 3px;
+  background: #000000;
+  top: -5px;
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transform: rotate(0deg);
+  transition: transform 250ms;
+  transform-origin: 19% 100%;
+  left: 8.5px;
+}
+
+.trash i {
+  position: relative;
+  width: 3px;
+  height: 25px;
+  background: #fff;
+  display: block;
+  margin: 7px auto;
+  border-radius: 5px;
+}
+.trash i:after {
+  content: "";
+  width: 3px;
+  height: 25px;
+  background: #fff;
+  position: absolute;
+  left: -9px;
+  border-radius: 5px;
+}
+.trash i:before {
+  content: "";
+  width: 3px;
+  height: 25px;
+  background: #fff;
+  position: absolute;
+  right: -9px;
+  border-radius: 5px;
+}
+
+.trash:hover span {
+  transform: rotate(-35deg);
+  transition: transform 250ms;
 }
 
 #footer {
