@@ -5,43 +5,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup</title>
-    <link rel="stylesheet" href="Signup.css">
+    <link rel="stylesheet" href="Signup.css" />
+    <script
+      src="https://kit.fontawesome.com/d5b9d7f3af.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <form action="" method="post">
       <h1>CataBook</h1>
       <h2>Sign up</h2>
       <label for="username">Username</label>
-      <input type="text" name="username" required />
+      <input
+        type="text"
+        name="username"
+        required
+        placeholder="Eg: Adam Smith"
+      />
       <label for="email">Email</label>
-      <input type="text" name="email" required />
+      <input
+        type="text"
+        name="email"
+        required
+        placeholder="Eg: AdamSmith@gmail.com"
+      />
       <div class="email error"></div>
       <label for="password">Password</label>
-      <input type="password" name="password" required />
+      <div>
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="At least 6 characters"
+        />
+        <i title="Show password" onclick="preview()" class="fas fa-eye"></i>
+      </div>
       <div class="password error"></div>
       <button>Sign up</button>
       <button><a id="login" href="/login">Back to Login</a></button>
     </form>
     <script>
+      const preview = () => {
+        let pass = document.getElementsByName('password')[0];
+        if (pass.type == "password") {
+          pass.type = "text";
+        } else {
+          pass.type = "password";
+        }
+      }
       const form = document.querySelector("form");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const username = form.username.value;
+        const username = form.username.value.trim();
         const email = form.email.value;
         const password = form.password.value;
         try {
           const res = await fetch("/signup", {
             method: "POST",
-            body: JSON.stringify({username, email, password }),
+            body: JSON.stringify({ username, email, password }),
             headers: { "Content-Type": "application/json" },
           });
           const data = await res.json();
           if (data.errs) {
-            console.log(data.errs.email)
+            document.querySelector(".email.error").textContent =
+              data.errs.email;
+            document.querySelector(".password.error").textContent =
+              data.errs.password;
+            console.log(data.errs.email);
             console.log(data.errs.password);
           }
           if (data.user) {
-            location.assign('/home');
+            location.assign("/home");
           }
         } catch (err) {
           console.log(err);

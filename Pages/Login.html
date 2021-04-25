@@ -5,7 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="Login.css">
+    <script
+      src="https://kit.fontawesome.com/d5b9d7f3af.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="Login.css" />
   </head>
   <body>
     <form action="" method="post">
@@ -15,7 +19,10 @@
       <input type="text" name="email" required />
       <div class="email error"></div>
       <label for="password">Password</label>
-      <input type="password" name="password" required />
+      <div>
+        <input type="password" name="password" required />
+        <i title="Show password" onclick="preview()" class="fas fa-eye"></i>
+      </div>
       <div class="password error"></div>
       <button>Log in</button>
       <button type="button"><a id="signup" href="/signup">Signup</a></button>
@@ -24,20 +31,29 @@
     <h4 id="login">Login successful, redirecting to homepage...</h4>
 
     <script>
+      const preview = () => {
+        let pass = document.getElementsByName("password")[0];
+        if (pass.type == "password") {
+          pass.type = "text";
+        } else {
+          pass.type = "password";
+        }
+      };
+
       const img = document.querySelector("img");
       const login = document.getElementById("login");
       const signup = document.getElementById("signup");
       img.style.display = "none";
       login.style.display = "none";
       const form = document.querySelector("form");
-      
+
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         //reset errors
         document.querySelector(".email.error").textContent = "";
         document.querySelector(".password.error").textContent = "";
-        
+
         const email = form.email.value;
         const password = form.password.value;
         try {
@@ -57,9 +73,9 @@
             form.style.display = "none";
             img.style.display = "block";
             login.style.display = "block";
-            signup.style.display = "none"
+            signup.style.display = "none";
             setTimeout(function () {
-              location.assign('/home');
+              location.assign("/home");
             }, 400);
             console.log("Login successful");
           }

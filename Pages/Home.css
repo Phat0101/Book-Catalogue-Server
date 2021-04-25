@@ -107,6 +107,7 @@ hr {
   background: none;
   border: none;
 }
+
 .my-custom-scrollbar {
   position: relative;
   height: 400px;
@@ -137,6 +138,16 @@ hr {
     to(transparent)
   );
 }
+
+#history tr:hover {
+  cursor: pointer;
+}
+
+#history tr td p:nth-child(1) {
+  font-size: 18px;
+  font-weight: 700;
+}
+
 #rightside {
   display: flex;
   justify-content: center;
@@ -191,6 +202,27 @@ hr {
     to(transparent)
   );
 }
+/* This is right side section */
+img {
+  opacity: 0;
+  width: 350px;
+  height: 350px;
+  margin: auto;
+  animation: gradualpopup 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+@keyframes gradualpopup {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 0;
+  }
+}
+
 
 #customise input {
   margin-bottom: 10px;
@@ -213,8 +245,12 @@ hr {
   animation: addcms 1s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 @keyframes addcms {
-  from{}
-  to {font-size: 17px; padding: auto}
+  from {
+  }
+  to {
+    font-size: 17px;
+    padding: auto;
+  }
 }
 #addgroup input {
   margin-left: 26px;
@@ -231,10 +267,10 @@ hr {
   font-size: 35px;
 }
 #download:hover {
-  animation: downloadbutton 1s cubic-bezier(0.165, 0.84, 0.44, 1);;
+  animation: downloadbutton 1s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 @keyframes downloadbutton {
-  from{ 
+  from {
     font-size: 35px;
   }
   to {

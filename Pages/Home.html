@@ -54,6 +54,7 @@
         </div>
       </div>
       <div id="rightside" class="col-sm-7">
+        <img src="/login-successful.png" alt="successful login" srcset="" style="display: none;"/>
         <div id="bookdetaildisplay" style="display: none" class="container-fluid">
           <h2>Book Info:</h2>
           <div class="row">
@@ -104,8 +105,8 @@
     </div>
     <script>
       let value = document.cookie.split("; ");
-      let username = value[0].split("=")[1];
-      let email = value[1].split("=")[1].replace("%40", "@");
+      let username = value[0].split("=")[1].replaceAll("%20", " ");
+      let email = value[1].split("=")[1].replaceAll("%40", "@");
       document.getElementById("username").innerHTML = `Hi ${username}`;
       document.getElementById("email").innerHTML = `${email}`;
 
@@ -232,19 +233,27 @@
           });
           const confirm = await res.json();
           if (confirm) {
-            for (let index = 0; index < confirm.comment.length; index++) {
-              let element = document.createElement("p");
-              if (confirm.comment[index] != "") {
-                element.innerHTML = confirm.comment[index];
-                document.getElementById("addedcomments").appendChild(element);
+            document.getElementById("customise").style.display = "none";
+            document.getElementById("bookdetaildisplay").style.display = "none"
+            document.getElementsByTagName("img")[0].style.display = "block"
+            setTimeout(function () {
+              for (let index = 0; index < confirm.comment.length; index++) {
+                let element = document.createElement("p");
+                if (confirm.comment[index] != "") {
+                  element.innerHTML = confirm.comment[index];
+                  document.getElementById("addedcomments").appendChild(element);
+                }
               }
-            }
-            document.getElementById("addedgroup").innerHTML = confirm.group;
-            document.getElementById("addbook").style.display = "none";
-            document.getElementById("deletebook").style.display = "block";
-            //add some animations comfirming saving successful
-            refreshHistory();
-            console.log(confirm);
+              document.getElementById("bookdetaildisplay").style.display = "block";
+              document.getElementById("customise").style.display = "block";
+              document.getElementById("addedgroup").innerHTML = confirm.group;
+              document.getElementById("addbook").style.display = "none";
+              document.getElementById("deletebook").style.display = "block";
+              //add some animations comfirming saving successful
+              document.getElementsByTagName("img")[0].style.display = "none"
+              refreshHistory();
+              console.log(confirm);
+            },1000);
           } else {
             console.log("Cannot save book to database");
           }
@@ -422,7 +431,7 @@
               <tr>
                 <td style = "width: 100%">
                   <div onclick="showHistory(${element.isbn})">
-                  <p>Title: ${element.title}</p>
+                  <p>${element.title}</p>
                   <p>ISBN: ${element.isbn}</p>
                   <p>Authors: ${element.authors}</p>
                   <p>${time} ago</p>
