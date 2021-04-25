@@ -29,6 +29,10 @@ body {
 #header p {
   margin: auto;
 }
+
+#username {
+  text-transform: capitalize;
+}
 #header a {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: black;
@@ -70,9 +74,10 @@ hr {
 #isbnform button {
   background: none;
   border: none;
+  padding-left: 10px;
 }
 
-#isbnform button i:hover {
+#isbnform button:not(:last-child):hover {
   background: none;
   border: none;
   animation: buttonhover 1s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -83,6 +88,18 @@ hr {
   }
   to {
     font-size: 18px;
+  }
+}
+
+#refresh i:hover {
+  animation: rotate 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
