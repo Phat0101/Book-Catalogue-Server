@@ -11,6 +11,17 @@ img {
   text-align: center;
 }
 
+#hi {
+  margin-top: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 90%;
+  height: auto;
+  font-size: 100px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
 #signup {
   width: 100%;
   color: #000000;

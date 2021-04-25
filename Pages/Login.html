@@ -29,7 +29,7 @@
     </form>
     <img src="/login-successful.png" alt="successful login" srcset="" />
     <h4 id="login">Login successful, redirecting to homepage...</h4>
-
+    <div id="hi"></div>
     <script>
       const preview = () => {
         let pass = document.getElementsByName("password")[0];
@@ -75,7 +75,14 @@
             login.style.display = "block";
             signup.style.display = "none";
             setTimeout(function () {
-              location.assign("/home");
+              img.style.display = "none";
+              login.style.display = "none";
+              document.getElementById(
+                "hi"
+              ).innerHTML = `Welcome ${data.user.username}`;
+              setTimeout(function () {
+                location.assign("/home");
+              }, 1000);
             }, 400);
             console.log("Login successful");
           }
