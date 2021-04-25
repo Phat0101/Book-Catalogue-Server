@@ -266,24 +266,21 @@
       const deleteBook = async () => {
         const isbn = document.getElementById("isbn").value;
         const email = document.getElementById("email").innerText;
-        const sure = prompt("Are you sure want to delete?", "yes") || "";
-        if (sure == "yes") {
-          try {
-            const res = await fetch("/home/delete", {
-              method: "POST",
-              body: JSON.stringify({ isbn, email }),
-              headers: { "Content-Type": "application/json" },
-            });
-            const confirm = await res.json();
-            if (confirm) {
-              refreshHistory();
-              clearBook();
-              document.getElementById("deletebook").style.display = "none";
-              console.log(confirm);
-            }
-          } catch (error) {
-            console.log(error);
+        try {
+          const res = await fetch("/home/delete", {
+            method: "POST",
+            body: JSON.stringify({ isbn, email }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const confirm = await res.json();
+          if (confirm) {
+            refreshHistory();
+            clearBook();
+            document.getElementById("deletebook").style.display = "none";
+            console.log(confirm);
           }
+        } catch (error) {
+          console.log(error);
         }
       };
 
