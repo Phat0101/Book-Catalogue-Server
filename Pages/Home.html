@@ -32,9 +32,8 @@
     <div class="row">
       <div id="leftside" class="col-sm-4">
         <form id="isbnform" action="" method="post">
-          <h4>ISBN search</h4>
-             <input
-            onclick="stopRefresh()"
+            <input
+            placeholder="ISBN"
             type="text"
             name="isbn"
             id="isbn"
@@ -54,7 +53,8 @@
         </div>
       </div>
       <div id="rightside" class="col-sm-7">
-        <img src="/login-successful.png" alt="successful login" srcset="" style="display: none;"/>
+        <img src="/login-successful.png" alt="successful found" srcset="" style="display: none;"/>
+        <h2 id="booknotfound" style="display: none;">Sorry! Your book can not be found online</h2>
         <div id="bookdetaildisplay" style="display: none" class="container-fluid">
           <h2>Book Info:</h2>
           <div class="row">
@@ -81,12 +81,12 @@
               <form id="addcomment" action="" method="post">
                 <label for="comment">Comment:</label>
                 <input id="comment" type="text" name="comment" />
-                <button><i class="fas fa-plus-circle"></i></button>
+                <button><i class="fas fa-plus-circle" title="add"></i></button>
               </form>
               <form id="addgroup" action="" method="post">
                 <label for="group">Group:</label>
                 <input id="group" type="text" name="group" />
-                <button><i class="fas fa-plus-circle"></i></button>
+                <button><i class="fas fa-plus-circle" title="add"></i></button>
               </form>
             </div>
             <div id="customise-right" class="col-2">
@@ -107,7 +107,7 @@
       let value = document.cookie.split("; ");
       let username = value[0].split("=")[1].replaceAll("%20", " ");
       let email = value[1].split("=")[1].replaceAll("%40", "@");
-      document.getElementById("username").innerHTML = `Hi ${username}`;
+      document.getElementById("username").innerHTML = `Hi ${username}!`;
       document.getElementById("email").innerHTML = `${email}`;
 
       //check ISBN function
@@ -131,9 +131,9 @@
       };
 
       //get book details from isbn submit
-      const isbn_form = document.getElementById("isbnform");
-      isbn_form.addEventListener("submit", async (e) => {
+      const isbn_form = document.getElementById("isbnform");      isbn_form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        document.getElementById("booknotfound").style.display = 'none';
         const isbn = isbn_form.isbn.value.trim();
         document.getElementById("deletebook").style.display = "none";
         if (checkISBN(isbn) == "ok") {
@@ -176,6 +176,7 @@
               document.getElementById("bookdetaildisplay").style.display =
                 "none";
               document.getElementById("customise").style.display = "none";
+              document.getElementById('booknotfound').style.display = 'block';
               console.log("not found");
             }
           } catch (error) {
@@ -200,6 +201,7 @@
         document.getElementById("bookdetaildisplay").style.display = "none";
         document.getElementById("customise").style.display = "none";
         document.getElementById("deletebook").style.display = "none";
+        document.getElementById("booknotfound").style.display = "none";
       };
 
       //add book in database
@@ -348,6 +350,7 @@
 
       //show book details when history is clicked
       const showHistory = async (isbn) => {
+        document.getElementById('booknotfound').style.display = 'none'
         const email = document.getElementById("email").innerText;
         document.getElementById("isbn").value = isbn;
         try {

@@ -45,6 +45,7 @@
       const signup = document.getElementById("signup");
       img.style.display = "none";
       login.style.display = "none";
+      document.getElementById('hi').style.display = 'none';
       const form = document.querySelector("form");
 
       form.addEventListener("submit", async (e) => {
@@ -77,6 +78,7 @@
             setTimeout(function () {
               img.style.display = "none";
               login.style.display = "none";
+              document.getElementById('hi').style.display = 'block';
               document.getElementById(
                 "hi"
               ).innerHTML = `Welcome ${data.user.username}`;
